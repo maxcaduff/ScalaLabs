@@ -6,7 +6,7 @@ import scala.io.StdIn
 
 object Main extends App {
 
-  testProducts()
+//  testProducts()
 
   println("Bienvenue au Chill-Out !")
 

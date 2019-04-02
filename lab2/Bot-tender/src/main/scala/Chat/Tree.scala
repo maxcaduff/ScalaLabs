@@ -18,10 +18,10 @@ object Tree {
       * For example if we had a "+" node, we would add the values of its two children, then return the result.
       * @return the result of the computation
       */
-      def computePrice: Double = {
+      def computePrice: Double = this match {
         case Item(product, brand) => brand.price
         case Items(item, n) => n * item.computePrice
-        case And(firstCommand, seconCommand) => firstCommand.computePrice + seconCommand.computePrice
+        case And(firstCommand, secondCommand) => firstCommand.computePrice + secondCommand.computePrice
         case Or(firstCommand, secondCommand) => Math.min(firstCommand.computePrice, secondCommand.computePrice)
         case _ => 0
       }
@@ -86,7 +86,7 @@ object Tree {
       first.toString + " ou " + second.toString
     }
   }
-  case class Item(product: Product, var brand: Brand = _) extends ExprTree {
+  case class Item(product: Product, var brand: Brand = null) extends ExprTree {
     // set the brand to the product's default one in case it is not specified
     if(brand == null)
       if(product.defaultBrand == null)
