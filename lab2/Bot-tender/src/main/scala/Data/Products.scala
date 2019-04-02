@@ -20,7 +20,7 @@ object Products {
 
 }
 
-class Product(var name: String, var brands: Set[Brand], var defaultBrand: Brand = new Brand("", -1)) {
+class Product(var name: String, var brands: Set[Brand], var defaultBrand: Brand = _) {
 
   def addBrand(brand: Brand) = {
     brands = brands + brand
