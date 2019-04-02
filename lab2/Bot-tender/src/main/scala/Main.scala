@@ -1,9 +1,12 @@
 import Chat.{Parser, Tokenizer}
 import Utils.ClinksCalculator._
+import Data.{Brand, Product, Products}
 
 import scala.io.StdIn
 
 object Main extends App {
+
+  testProducts()
 
   println("Bienvenue au Chill-Out !")
 
@@ -26,5 +29,24 @@ object Main extends App {
         println(printResult)
       }
     }
+  }
+
+  def testProducts(): Unit = {
+    val punk: Brand = new Brand("PunkIPA", 3)
+    val boxer: Brand = new Brand("Boxer", 1)
+
+    val biere: Product = new Product("Biere", Set[Brand](punk, boxer), boxer)
+
+    print("Bieres: \n" + biere.toString + "\n")
+
+    val crMaison: Brand = new Brand("Maison", 2)
+    val crCailler: Brand = new Brand("Cailler", 2)
+
+    val croissant = new Product("Croissant", Set[Brand](crMaison, crCailler), crMaison)
+
+    val products = Products
+    products.addProducts(List(biere, croissant))
+
+    print("\nMenu: \n" + products.toString + "\n")
   }
 }
