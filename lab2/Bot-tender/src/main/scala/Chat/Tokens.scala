@@ -1,5 +1,8 @@
 package Chat
 
+/**
+  * Modified by: Alexandra Korukova, Max Caduff
+  */
 object Tokens {
   type Token = Int
 
@@ -48,12 +51,22 @@ object Tokens {
   val ASSOIFFE : Token = 13
   val AFFAME : Token = 14
 
+  /**
+    * Indicates if the provided token corresponds to a product
+    * @param t the token in question
+    * @return true if the token corresponds to a product
+    */
   def isProduct(t: Token): Boolean = {
     if (t == BIERE || t == CROISSANT || t == CHIPS)
       return true
     false
   }
 
+  /**
+    * Indicates if the provided token corresponds to a brand
+    * @param t the token in question
+    * @return true if the token corresponds to a brand
+    */
   def isBrand(t: Token): Boolean = {
     if (t == MAISON ||
         t == CAILLER ||

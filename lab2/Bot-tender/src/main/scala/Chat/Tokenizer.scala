@@ -4,6 +4,9 @@ import Chat.Tokens._
 import Utils.Dictionary.dictionary
 import Utils.SpellChecker._
 
+/**
+  * Modified by: Alexandra Korukova, Max Caduff
+  */
 class Tokenizer(input: String) {
   var tokens: Array[(String, Token)] = Array()
   var currentTokenIndex = -1

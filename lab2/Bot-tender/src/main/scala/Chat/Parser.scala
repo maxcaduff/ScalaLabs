@@ -5,6 +5,9 @@ import Data.{Brand, Product, Products}
 import Tree._
 
 // TODO - step 4
+/**
+  * Mofified by: Alexandra Korukova, Max Caduff
+  */
 class Parser(tokenizer: Tokenizer) {
   import tokenizer._
 
@@ -92,12 +95,32 @@ class Parser(tokenizer: Tokenizer) {
       Price(parseOrder())
     }// [bonjour] quel est le prix de **order**
     else expected(BONJOUR, JE, COMBIEN, QUEL)
-
   }
 
 
+  /**
+    * Parses the order. The order can be the single product (number of products, product name and brand) or the
+    * sequence of products with and/or (ET/OU) between them.
+    * Note: and/or operator has no priorities one over another, the products are treated in the order they appear
+    * in the order.
+    *
+    * For instance, if the user enters "1 bière tenebreuse et 1 croissant ou 1 bière farmer", the resulting ExprTree
+    * will look like:
+    *
+    * And({1 biere tenebreuse}, Or(1 croissant, 1 biere farmer))
+    *
+    * So, if we consider that the tenebreuse costs 4 CHF, a croissant - 2 CHF and the farmer beer - 1 CHF,
+    * the resulting price will be calculated like this:
+    *
+    * 1. Or(1 croissant, 1 farmer) -> min(2, 1) -> 1
+    * 2. And(tenebreuse, 1) -> 4 + 1 -> 5 CHF
+    *
+    * @return an ExprTree containing the order
+    */
   def parseOrder(): ExprTree = {
+    // Read the product which probably will become the left operand of And/Or ExprTree
     val left: ExprTree = parseProduct()
+    // If ET or OU token is detected, make a recursive call to read And/Or ExprTree right operand
     curToken match {
       case ET => {
         readToken()
@@ -112,16 +135,16 @@ class Parser(tokenizer: Tokenizer) {
   }
 
   /**
-    * Reads the order containing N products of the same type
-    * The order is composed of the number of products, name of the product and the brand of the product (optional)
-    * @return the Tuple3 containing the number of products (._1), name of the product (._2) and the brand of the product
-    *         If the brand is not specified, the default product's brand is return
+    * Parses the number of products, the product name and its brand (optional)
+    * @return the ExprTree containing the number of products, name of the product and the brand of the product
+    *         (Items case class)
+    *         If the brand is not specified, the default product's brand is returned
     */
   def parseProduct(): ExprTree = {
     var num: Int = 0 // number of products
     var product: Product = null // the ordered product
     var brand: Brand = null // the ordered brand
-    // Read number of products (mandatory)
+    // Read number of products
     if (curToken == NUM) {
       num = curValue.toInt
     } else expected(NUM)

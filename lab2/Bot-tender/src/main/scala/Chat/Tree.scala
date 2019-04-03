@@ -4,6 +4,9 @@ import Chat.Tree.ExprTree
 import Data.{Brand, Product, UsersInfo}
 
 // TODO - step 3
+/**
+  * Modified by: Alexandra Korukova, Max Caduff
+  */
 object Tree {
 
   val authenticationDemand: String = "Veuillez d'abord vous identifier."
@@ -76,6 +79,9 @@ object Tree {
     }
   }
 
+  /**
+    * Computational nodes
+    */
   case class And(first: ExprTree, second: ExprTree) extends ExprTree {
     override def toString: String = {
       first.toString + " et " + second.toString
