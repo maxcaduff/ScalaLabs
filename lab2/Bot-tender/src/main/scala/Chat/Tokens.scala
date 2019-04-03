@@ -35,7 +35,7 @@ object Tokens {
   val MON: Token         = 26
   val SOLDE: Token       = 27
   val COMBIEN: Token     = 28
-  val COUTE: Token       = 29
+  val COUTER: Token      = 29
   val COUTENT: Token     = 29
   val QUEL: Token        = 30
   val LE: Token          = 31

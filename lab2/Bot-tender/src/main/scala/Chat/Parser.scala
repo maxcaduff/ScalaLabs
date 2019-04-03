@@ -1,7 +1,7 @@
 package Chat
 
 import Chat.Tokens._
-import Data.{Brand, Products, Product}
+import Data.{Brand, Product, Products}
 import Tree._
 
 // TODO - step 4
@@ -21,10 +21,11 @@ class Parser(tokenizer: Tokenizer) {
 
   /** Complains that what was found was not expected. The method accepts arbitrarily many arguments of type TokenClass */
   // TODO (BONUS): find a way to display the string value of the tokens (e.g. "BIERE") instead of their integer value (e.g. 6).
-  private def expected(token: Token, more: Token*): Nothing =
+  private def expected(token: Token, more: Token*): Nothing = {
     fatalError(" expected: " +
       (token :: more.toList).mkString(" or ") +
       ", found: " + curToken)
+  }
 
   def fatalError(msg: String): Nothing = {
     println("Fatal error", msg)
@@ -64,7 +65,8 @@ class Parser(tokenizer: Tokenizer) {
       else if (curToken == VOULOIR) {
         readToken()
         if(curToken == COMMANDER) {
-          parseOrder()
+          readToken()
+          Command(parseOrder())
         } // [bonjour] je vouloir commander **order**
         else if (curToken == CONNAITRE) {
           readToken()
@@ -75,8 +77,22 @@ class Parser(tokenizer: Tokenizer) {
         else expected(COMMANDER, CONNAITRE)
       } // [bonjour] je vouloir
       else expected(ME, VOULOIR)
-    }
-    else expected(BONJOUR, JE)
+    } // [bonjour] je
+    else if (curToken == COMBIEN) {
+      eat(COMBIEN)
+      eat(COUTER)
+      Price(parseOrder())
+    } // [bonjour] combien coute **order**
+    else if (curToken == QUEL) {
+      readToken()
+      eat(ETRE)
+      eat(LE)
+      eat(PRIX)
+      eat(DE)
+      Price(parseOrder())
+    }// [bonjour] quel est le prix de **order**
+    else expected(BONJOUR, JE, COMBIEN, QUEL)
+
   }
 
 
@@ -96,7 +112,7 @@ class Parser(tokenizer: Tokenizer) {
   }
 
   /**
-    * Reads the order containing N prducts of the same type
+    * Reads the order containing N products of the same type
     * The order is composed of the number of products, name of the product and the brand of the product (optional)
     * @return the Tuple3 containing the number of products (._1), name of the product (._2) and the brand of the product
     *         If the brand is not specified, the default product's brand is return
@@ -118,8 +134,8 @@ class Parser(tokenizer: Tokenizer) {
     // Read the brand if it specified, set the brand to the default product's one otherwise
     brand = product.defaultBrand
     if(isBrand(curToken)) {
-      eat(curToken)
       brand = product.getBrandByName(curValue)
+      eat(curToken)
     }
     Items(Item(product, brand), num)
   }

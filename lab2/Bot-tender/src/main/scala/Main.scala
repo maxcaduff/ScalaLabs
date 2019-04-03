@@ -8,6 +8,9 @@ object Main extends App {
 
 //  testProducts()
 
+  // Initialize the menu
+  Menu
+
   println("Bienvenue au Chill-Out !")
 
   while (true) {

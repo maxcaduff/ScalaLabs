@@ -14,6 +14,7 @@ object Dictionary {
     "je" -> "je",
     "j" -> "je",
     "suis" -> "etre",
+    "est" -> "etre",
     "veux" -> "vouloir",
     "aimerais" -> "vouloir",
     "voudrais" -> "vouloir",
@@ -39,7 +40,21 @@ object Dictionary {
     "wittekop" -> "wittekop",
     "punkipa" -> "punkipa",
     "jackhammer" -> "jackhammer",
+    "tenebreuse" -> "tenebreuse",
     "mon" -> "mon",
-    "solde" -> "solde"
+    "solde" -> "solde",
+    "coute" -> "couter",
+    "coute" -> "couter",
+    "coutent" -> "couter",
+    "combien" -> "combien",
+    "prix" -> "prix",
+    "quel" -> "quel",
+    "quels" -> "quel",
+    "le" -> "le",
+    "la" -> "le",
+    "l'" -> "le",
+    "de" -> "de",
+    "du" -> "de",
+    "d'" -> "de"
   )
 }

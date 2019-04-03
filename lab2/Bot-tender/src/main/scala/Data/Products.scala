@@ -10,59 +10,43 @@ object Products {
     products = products + product
   }
 
-  def addProducts(products: List[Product]) = {
-    this.products = this.products ++ products
-  }
+  def addProducts(products: Seq[Product]) = this.products = this.products ++ products
 
-  def getProductByName(productName: String): Product = {
-    val foundProduct: Option[Product] = products.find(p => p.name == productName)
-    foundProduct match {
+
+  def getProductByName(productName: String): Product =
+    products.find(p => p.name == productName) match {
       case Some(product) => product
       case None => throw new Error("No product named " + productName)
     }
-  }
 
-  override def toString: String = {
-    products.foldLeft("") {(str, p) => str + p.toString + "\n"}
-  }
-
+  override def toString: String = products.foldLeft("") { (str, p) => str + p.toString + "\n" }
 }
 
 class Product(var name: String, var brands: Set[Brand], var defaultBrand: Brand = null) {
 
-  def == (other: Product): Boolean = {
-    this.name == other.name
-  }
+  def == (other: Product): Boolean = this.name == other.name
 
-  def addBrand(brand: Brand) = {
-    brands = brands + brand
-  }
+  def addBrand(brand: Brand) = brands = brands + brand
+
+
+  def addBrands(brands: Seq[Brand]) = this.brands = this.brands ++ brands
 
   def getBrandByName(brandName: String): Brand = {
-    val foundBrand: Option[Brand] = brands.find(b => b.name == brandName)
-    foundBrand match {
+    brands.find(b => b.name == brandName) match {
       case Some(brand) => brand
       case None => defaultBrand
     }
   }
 
-  def setDefaultBrand(brand: Brand) = {
-    defaultBrand = brand
-  }
+  def setDefaultBrand(brand: Brand) = defaultBrand = brand
 
-  override def toString: String = {
-    name + " :" + brands.foldLeft(""){ (str, el) =>  str + "\n\t" + el.toString}
-  }
+  override def toString: String = name + " :" + brands.foldLeft(""){ (str, el) =>  str + "\n\t" + el.toString}
+
 
 }
 
 class Brand(var name: String, var price: Float) {
 
-  def == (other: Brand): Boolean = {
-    this.name == other.name
-  }
+  override def toString: String = name + " : " + price.toString
 
-  override def toString: String = {
-    name + " : " + price.toString
-  }
 }

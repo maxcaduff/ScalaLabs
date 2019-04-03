@@ -33,13 +33,13 @@ object Tree {
         case Authentication(name) =>
           UsersInfo.setActiveUser(name)
           "Bonjour, " + name
+        case Price(basket) => "Cela coûte CHF " + basket.computePrice
         case other =>
           if(UsersInfo.activeUser == null)
             authenticationDemand
           else other match {
             case Balance() => "Le montant actuel de votre solde est de CHF " +
               UsersInfo.getUsersBalance(UsersInfo.activeUser)
-            case Price(basket) => "Cela coûte CHF " + basket.computePrice
             case Command(basket) => {
               // Compute the total price of the command
               val totalPrice = basket.computePrice
@@ -51,7 +51,7 @@ object Tree {
                 "Solde insuffisante"
               else
                 "Voici donc " + basket.toString + " ! Cela coûte CHF " + totalPrice.toString +
-                  "et votre nouveau solde est de CHF " + newBalance
+                  " et votre nouveau solde est de CHF " + newBalance
             }
             case Price(basket) => "Cela coûte " + basket.computePrice.toString
           }
