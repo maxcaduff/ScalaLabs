@@ -16,6 +16,7 @@ object Dictionary {
     "suis" -> "etre",
     "veux" -> "vouloir",
     "aimerais" -> "vouloir",
+    "voudrais" -> "vouloir",
     "bière" -> "biere",
     "bières" -> "biere",
     "croissant" -> "croissant",
@@ -26,5 +27,19 @@ object Dictionary {
     "assoiffée" -> "assoiffe",
     "affamé" -> "affame",
     "affamée" -> "affame",
+    "m" -> "me",
+    "appelle" -> "appeller",
+    "commander" -> "commander",
+    "connaitre" -> "connaitre",
+    "connaître" -> "connaitre",
+    "maison" -> "maison",
+    "cailler" -> "cailler",
+    "farmer" -> "farmer",
+    "boxer" -> "boxer",
+    "wittekop" -> "wittekop",
+    "punkipa" -> "punkipa",
+    "jackhammer" -> "jackhammer",
+    "mon" -> "mon",
+    "solde" -> "solde"
   )
 }

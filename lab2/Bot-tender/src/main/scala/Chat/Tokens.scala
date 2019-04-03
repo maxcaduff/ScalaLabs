@@ -6,9 +6,11 @@ object Tokens {
   // Terms
   val BONJOUR: Token     = 0
   val JE: Token          = 1
+  val ME: Token          = 35
   // Actions
   val ETRE: Token        = 2
   val VOULOIR: Token     = 3
+  val APPELLER: Token    = 34
   // Operators
   val ET: Token          = 4
   val OU: Token          = 5
@@ -45,4 +47,23 @@ object Tokens {
   // Test
   val ASSOIFFE : Token = 13
   val AFFAME : Token = 14
+
+  def isProduct(t: Token): Boolean = {
+    if (t == BIERE || t == CROISSANT || t == CHIPS)
+      return true
+    false
+  }
+
+  def isBrand(t: Token): Boolean = {
+    if (t == MAISON ||
+        t == CAILLER ||
+        t == FARMER ||
+        t == BOXER ||
+        t == WITTEKOP ||
+        t == PUNKIPA ||
+        t == JACKHAMMER ||
+        t == TENEBREUSE)
+      return true
+    false
+  }
 }

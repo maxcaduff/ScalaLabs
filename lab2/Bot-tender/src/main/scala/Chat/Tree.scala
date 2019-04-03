@@ -76,12 +76,12 @@ object Tree {
     }
   }
 
-  case class And(first: Items, second: Items) extends ExprTree {
+  case class And(first: ExprTree, second: ExprTree) extends ExprTree {
     override def toString: String = {
       first.toString + " et " + second.toString
     }
   }
-  case class Or(first: Items, second: Items) extends ExprTree {
+  case class Or(first: ExprTree, second: ExprTree) extends ExprTree {
     override def toString: String = {
       first.toString + " ou " + second.toString
     }
@@ -94,7 +94,7 @@ object Tree {
       else
         brand = product.defaultBrand
     // check if the brand exists in the products brands set
-    if(product.brands(brand) == false)
+    if(!product.brands(brand))
       throw new Error("Brand " + brand.name + " does not correspond to product " + product.name)
 
     override def toString: String = {
