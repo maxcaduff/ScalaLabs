@@ -22,10 +22,10 @@ object UsersInfo {
     * @param user the user to set as active user
     * @return
     */
-  def setActiveUser(user: String) = {
+  def setActiveUser(user: String): Unit = {
     // If the user with a given pseudo does not exist in accounts, add him/her there
     accounts.getOrElse(user, {
-      accounts = accounts + (user -> initialBalance)
+      accounts += user -> initialBalance
     })
     // Set the active user
     _activeUser = user
@@ -35,7 +35,7 @@ object UsersInfo {
     * Getter
     * @return the current active user
     */
-  def activeUser = _activeUser
+  def activeUser: String = _activeUser
 
   /**
     * Returns the user's balance.
@@ -51,18 +51,18 @@ object UsersInfo {
     * Update an account by decreasing its balance.
     * @param user the user whose account will be updated
     * @param amount the amount to decrease
-    * @return the new balance
+    * @return true if purchase was done, false otherwise
     */
   // TODO: step 2
-  def purchase(user: String, amount: Double): Double = {
+  def purchase(user: String, amount: Double): Boolean = {
     // get the user's balance or throw an error if the user with a given pseudo does not exist
     var balance = accounts.getOrElse(user, throw new Error("User " + user + " does not exist"))
     // if there is not enough $$, the balance isn't changed
     if (balance < amount)
-      balance
+      return false
     // otherwise, update user's balance and update the account info
     balance -= amount
-    accounts = accounts + (user -> balance)
-    balance
+    accounts += user -> balance
+    true
   }
 }

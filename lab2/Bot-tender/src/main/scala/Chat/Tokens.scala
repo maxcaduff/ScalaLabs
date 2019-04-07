@@ -39,7 +39,6 @@ object Tokens {
   val SOLDE: Token       = 27
   val COMBIEN: Token     = 28
   val COUTER: Token      = 29
-  val COUTENT: Token     = 29
   val QUEL: Token        = 30
   val LE: Token          = 31
   val PRIX: Token        = 32
@@ -48,8 +47,8 @@ object Tokens {
   val UNKNOWN: Token     = 11
   val EOL: Token         = 12
   // Test
-  val ASSOIFFE : Token = 13
-  val AFFAME : Token = 14
+  val ASSOIFFE : Token   = 13
+  val AFFAME : Token     = 14
 
   /**
     * Indicates if the provided token corresponds to a product
@@ -57,9 +56,7 @@ object Tokens {
     * @return true if the token corresponds to a product
     */
   def isProduct(t: Token): Boolean = {
-    if (t == BIERE || t == CROISSANT || t == CHIPS)
-      return true
-    false
+    t == BIERE || t == CROISSANT || t == CHIPS
   }
 
   /**
@@ -68,15 +65,55 @@ object Tokens {
     * @return true if the token corresponds to a brand
     */
   def isBrand(t: Token): Boolean = {
-    if (t == MAISON ||
-        t == CAILLER ||
-        t == FARMER ||
-        t == BOXER ||
-        t == WITTEKOP ||
-        t == PUNKIPA ||
-        t == JACKHAMMER ||
-        t == TENEBREUSE)
-      return true
-    false
+     t == MAISON ||
+     t == CAILLER ||
+     t == FARMER ||
+     t == BOXER ||
+     t == WITTEKOP ||
+     t == PUNKIPA ||
+     t == JACKHAMMER ||
+     t == TENEBREUSE
   }
+
+  def getName (token: Token): String = {
+    token match {
+      case BONJOUR => "bonjour"
+      case JE => "je"
+      case ETRE => "etre"
+      case VOULOIR => "vouloir"
+      case BIERE => "biere"
+      case CROISSANT => "croissant"
+      case ET => "et"
+      case OU => "ou"
+      case ASSOIFFE => "assoiffe"
+      case AFFAME => "affame"
+      case ME => "me"
+      case APPELLER => "appeller"
+      case COMMANDER => "commander"
+      case CONNAITRE => "connaitre"
+      case MAISON => "maison"
+      case CAILLER => "cailler"
+      case FARMER => "farmer"
+      case BOXER => "boxer"
+      case WITTEKOP => "wittekop"
+      case PUNKIPA => "punkipa"
+      case JACKHAMMER => "jackhammer"
+      case TENEBREUSE => "tenebreuse"
+      case MON => "mon"
+      case SOLDE => "solde"
+      case COUTER => "couter"
+      case COMBIEN => "combien"
+      case PRIX => "prix"
+      case QUEL => "quel"
+      case LE => "le"
+      case DE => "de"
+      case UNKNOWN => "unknown"
+      case EOL => "end of line"
+      case NUM => "number"
+      case PSEUDO => "pseudo"
+      case _ => "undefined token"
+    }
+  }
+
+
 }

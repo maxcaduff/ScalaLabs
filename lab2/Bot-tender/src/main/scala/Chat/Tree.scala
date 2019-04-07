@@ -37,26 +37,24 @@ object Tree {
           UsersInfo.setActiveUser(name)
           "Bonjour, " + name
         case Price(basket) => "Cela coûte CHF " + basket.computePrice
+        case BadSyntax(msg) => msg
         case other =>
           if(UsersInfo.activeUser == null)
             authenticationDemand
           else other match {
             case Balance() => "Le montant actuel de votre solde est de CHF " +
               UsersInfo.getUsersBalance(UsersInfo.activeUser)
-            case Command(basket) => {
+            case Command(basket) =>
               // Compute the total price of the command
               val totalPrice = basket.computePrice
-              // Check if there is enough money on user's account
-              // If there is not enough money, prevent the user, execute the command otherwise
-              val curBalance = UsersInfo.getUsersBalance(UsersInfo.activeUser)
-              val newBalance =  UsersInfo.purchase(UsersInfo.activeUser, totalPrice)
-              if(curBalance == newBalance)
-                "Solde insuffisante"
+              // purchase is done only if there is enough money on the user's account
+              if(UsersInfo.purchase(UsersInfo.activeUser, totalPrice))
+                "Voici donc " + basket + " ! Cela coûte CHF " + totalPrice +
+                  " et votre nouveau solde est de CHF " + UsersInfo.getUsersBalance(UsersInfo.activeUser)
               else
-                "Voici donc " + basket.toString + " ! Cela coûte CHF " + totalPrice.toString +
-                  " et votre nouveau solde est de CHF " + newBalance
-            }
-            case Price(basket) => "Cela coûte " + basket.computePrice.toString
+                "Solde insuffisant"
+
+            case Price(basket) => "Cela coûte " + basket.computePrice
           }
       }
 
@@ -78,6 +76,9 @@ object Tree {
       n.toString + " " + item.toString
     }
   }
+  case class BadSyntax(msg: String) extends ExprTree
+  case class EmptyTree() extends ExprTree
+
 
   /**
     * Computational nodes

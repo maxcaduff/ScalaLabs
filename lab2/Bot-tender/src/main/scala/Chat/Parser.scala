@@ -20,79 +20,74 @@ class Parser(tokenizer: Tokenizer) {
   def readToken(): Unit = curTuple = nextToken()
 
   /** "Eats" the expected token, or terminates with an error. */
-  private def eat(token: Token): Unit = if (token == curToken) readToken() else expected(token)
+  private def eat(token: Token): Boolean = if (token == curToken) {readToken(); true } else false
 
   /** Complains that what was found was not expected. The method accepts arbitrarily many arguments of type TokenClass */
-  // TODO (BONUS): find a way to display the string value of the tokens (e.g. "BIERE") instead of their integer value (e.g. 6).
-  private def expected(token: Token, more: Token*): Nothing = {
-    fatalError(" expected: " +
-      (token :: more.toList).mkString(" or ") +
-      ", found: " + curToken)
+  private def expected(token: Token, more: Token*): ExprTree = {
+    BadSyntax("je n'ai pas compris... j'attendais: '" +
+      (getName(token) :: more.map(t => getName(t)).toList).mkString("' ou '") +
+      "', j'ai trouvé: " + getName(curToken))
   }
 
-  def fatalError(msg: String): Nothing = {
+  def fatalError(msg: String): Unit = {
     println("Fatal error", msg)
     new Exception().printStackTrace()
-    sys.exit(1)
+//    sys.exit(1)
   }
 
   /** the root method of the parser: parses an entry phrase */
   def parsePhrases() : ExprTree = {
-    if (curToken == BONJOUR) eat(BONJOUR)
-    if (curToken == JE ) {
-      eat(JE)
-      if (curToken == ETRE) {
-        eat(ETRE)
-        if (curToken == ASSOIFFE) {
-          // Here we do not "eat" the token, because we want to have a custom 2-parameters "expected" if the user gave a wrong token.
-          readToken()
+    eat(BONJOUR)
+    if (eat(JE) ) {
+      if (eat(ETRE)) {
+        if (eat(ASSOIFFE))
           Thirsty()
-        } // [bonjour] je etre assoife
-        else if (curToken == AFFAME) {
-          readToken()
+         // [bonjour] je etre assoiffe
+        else if (eat(AFFAME))
           Hungry()
-        } // [bonjour] je etre affame
+         // [bonjour] je etre affame
         else if (curToken == PSEUDO) {
           val username = curValue.substring(1).toLowerCase()
           readToken()
           Authentication(username)
         } // [bonjour] je suis _pseudo
-        else expected(ASSOIFFE, AFFAME, PSEUDO)
+        else
+          expected(ASSOIFFE, AFFAME, PSEUDO)
       } // [bonjour] je etre
-      else if (curToken == ME) {
-        eat(ME)
-        eat(APPELLER)
-        val username = curValue.substring(1).toLowerCase()
-        Authentication(username)
+      else if (eat(ME)) {
+        if (eat(APPELLER)) {
+          if (curToken == PSEUDO) {
+            val username = curValue.substring(1).toLowerCase()
+            readToken()
+            Authentication(username)
+          }
+          else expected(PSEUDO)
+        }
+        else expected(APPELLER)
       } // [bonjour] je me appeller _pseudo
-      else if (curToken == VOULOIR) {
-        readToken()
-        if(curToken == COMMANDER) {
-          readToken()
+      else if (eat(VOULOIR)) {
+        if(eat(COMMANDER))
           Command(parseOrder())
-        } // [bonjour] je vouloir commander **order**
-        else if (curToken == CONNAITRE) {
-          readToken()
-          eat(MON)
-          eat(SOLDE)
-          Balance()
+         // [bonjour] je vouloir commander **order**
+        else if (eat(CONNAITRE)) {
+          if (eat(MON) && eat(SOLDE))
+            Balance()
+          else expected(MON, SOLDE)
         } // [bonjour] je vouloir connaitre mon solde
         else expected(COMMANDER, CONNAITRE)
       } // [bonjour] je vouloir
-      else expected(ME, VOULOIR)
+      else expected(ME, ETRE, VOULOIR)
     } // [bonjour] je
-    else if (curToken == COMBIEN) {
-      eat(COMBIEN)
-      eat(COUTER)
-      Price(parseOrder())
+    else if (eat(COMBIEN)) {
+      if (eat(COUTER))
+        Price(parseOrder())
+      else expected(COUTER)
     } // [bonjour] combien coute **order**
-    else if (curToken == QUEL) {
-      readToken()
-      eat(ETRE)
-      eat(LE)
-      eat(PRIX)
-      eat(DE)
-      Price(parseOrder())
+    else if (eat(QUEL)) {
+      if (eat(ETRE) && eat(LE) && eat(PRIX) && eat(DE))
+        Price(parseOrder())
+      else expected( LE, PRIX, DE)
+
     }// [bonjour] quel est le prix de **order**
     else expected(BONJOUR, JE, COMBIEN, QUEL)
   }
@@ -102,7 +97,7 @@ class Parser(tokenizer: Tokenizer) {
     * Parses the order. The order can be the single product (number of products, product name and brand) or the
     * sequence of products with and/or (ET/OU) between them.
     * Note: and/or operator has no priorities one over another, the products are treated in the order they appear
-    * in the order.
+    * in the sentence.
     *
     * For instance, if the user enters "1 bière tenebreuse et 1 croissant ou 1 bière farmer", the resulting ExprTree
     * will look like:
@@ -122,14 +117,14 @@ class Parser(tokenizer: Tokenizer) {
     val left: ExprTree = parseProduct()
     // If ET or OU token is detected, make a recursive call to read And/Or ExprTree right operand
     curToken match {
-      case ET => {
+      case ET =>
         readToken()
         And(left, parseOrder())
-      }
-      case OU => {
+
+      case OU =>
         readToken()
          Or(left, parseOrder())
-      }
+
       case _ => left
     }
   }

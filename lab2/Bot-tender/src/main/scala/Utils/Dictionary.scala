@@ -35,6 +35,7 @@ object Dictionary {
     "commander" -> "commander",
     "connaitre" -> "connaitre",
     "connaître" -> "connaitre",
+    "savoir" -> "connaitre",
     "maison" -> "maison",
     "cailler" -> "cailler",
     "farmer" -> "farmer",
@@ -45,8 +46,12 @@ object Dictionary {
     "tenebreuse" -> "tenebreuse",
     "mon" -> "mon",
     "solde" -> "solde",
+    "vaut" -> "couter",
+    "valent" -> "couter",
+    "fait" -> "couter",
+    "font" -> "couter",
     "coute" -> "couter",
-    "coute" -> "couter",
+    "couter" -> "couter",
     "coutent" -> "couter",
     "combien" -> "combien",
     "prix" -> "prix",
@@ -57,6 +62,8 @@ object Dictionary {
     "l'" -> "le",
     "de" -> "de",
     "du" -> "de",
-    "d'" -> "de"
+    "d'" -> "de",
+    "un" -> "1",
+    "une" -> "1"
   )
 }
